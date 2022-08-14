@@ -36,12 +36,14 @@ function App() {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      <header className="App-header">
+      <header >
+      <h1>⚛️🔥💬</h1>
+        <SignOut />
        
-       <section>
+      </header>
+      <section>
         {user ? <ChatRoom/> : <SignIn/>}
        </section>
-      </header>
     </div>
   );
 }
@@ -54,6 +56,7 @@ function SignIn(){
   return(
     <button onClick ={signInWithGoogle}>sign in with google</button>
   )
+}
 
   function SignOut(){
       return auth.currentUser && (
@@ -63,7 +66,7 @@ function SignIn(){
 
    function ChatRoom(){
     const messagesRef = firestore.collection('messages');
-    const query = messagesRef.orderBy('createdAt').limit(25);
+    const query = messagesRef.orderBy('createdAt').limit(30);
 
     const [messages] = useCollectionData(query,{idField:'id'});
 
@@ -95,7 +98,7 @@ function SignIn(){
 
       <form onSubmit={sendMessage} >
         <input value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
-        <button type='submit'>send</button>
+        <button type='submit' disabled={!formValue}>send</button>
       </form>
       </>
       
@@ -109,12 +112,13 @@ function SignIn(){
 
     return(
       <div className={`message ${messageClass}`}>
+        <img src={photoURL} alt =""></img>
         <p>{text}</p>
       </div>
 
    
     )
-  }
+  
 }
 
 export default App;
